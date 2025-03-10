@@ -8,4 +8,4 @@ router.get("/dashboard", authMiddleware, adminMiddleware, (req, res) => {
   res.json({ message: "Welcome to Admin Dashboard" });
 });
 
-modul.exports = router;
+module.exports = router;
