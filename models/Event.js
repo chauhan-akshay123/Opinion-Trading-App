@@ -31,6 +31,11 @@ const EventSchema = new mongoose.Schema(
         winner: {
             type: String,
             default: null
+        },
+        odds: {  
+            type: Map,
+            of: Number, // Odds are stored as { "Team A": 1.5, "Team B": 2.2 }
+            required: true
         } 
     },
     {

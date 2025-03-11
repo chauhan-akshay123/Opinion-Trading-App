@@ -2,24 +2,28 @@ const mongoose = require("mongoose");
 
 const TradeSchema = new mongoose.Schema(
     {
-        userId: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
         },
-        eventId: {
+        event: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Event",
             required: true
         },
-        selectedTeam: {
+        teamSelected: {
             type: String,
             required: true
         },
-        amount: {
-            type: String,
+        stake: {
+            type: Number, 
             required: true,
             min: 1
+        },
+        odds: {
+            type: Number,
+            required: true
         },
         status: {
             type: String,
@@ -34,6 +38,6 @@ const TradeSchema = new mongoose.Schema(
     {
         timestamps: true
     }
-)
+);
 
 module.exports = mongoose.model("Trade", TradeSchema);
