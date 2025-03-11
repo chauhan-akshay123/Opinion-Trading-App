@@ -84,3 +84,34 @@ exports.cancelTrade = async (req, res) => {
        res.status(500).json({ message: "Server error", error }); 
     }
 };
+
+exports.getActiveEvents = async (req, res) => {
+  try{
+    const events = await Event.find({ status: { $in: ["live", "upcoming"] } });
+
+    if(!events.length) {
+        return res.status(404).json({ message: "No active events found" });
+    }
+    
+    res.json(events);
+  } catch(error){
+      res.status(500).json({ message: "Server error", error });
+  }
+};
+
+exports.getUserActiveBets = async (req, res) => {
+    try{
+      const userId = req.user.id;
+      
+      const bets = await Trade.find({ user: userId, status: "pending" }).populate("event");
+
+      if(!bets.length) {
+        return res.status(404).json({ message: "No active bets found" });
+      }
+
+      res.status(200).json(bets);
+    } catch(error){
+       res.status(500).json({ message: "Server error", error }); 
+    }
+};
+
