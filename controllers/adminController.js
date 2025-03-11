@@ -53,13 +53,13 @@ exports.getEventById = async (req, res) => {
 
 // Delete an event
 exports.deleteEvent = async (req, res) => {
-    try{
-      const event = await Event.findOne({ eventId: req.params.id });
-      if(!event) {
-         return res.status(404).json({ message: "Event not found" });
-      }  
-      res.json({ message: "Event deleted successfully" });
-    } catch(error){
+    try {
+        const event = await Event.findOneAndDelete({ eventId: req.params.id });
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+        res.json({ message: "Event deleted successfully" });
+    } catch (error) {
         res.status(500).json({ message: "Server error", error });
     }
 };
@@ -76,22 +76,22 @@ exports.getAllTrades = async (req, res) => {
 
 // Settle a trade (mark as won/lost)
 exports.settleTrade = async (req, res) => {
-    try{
-      const { id } = req.params;
-      const { status } = req.body;
-      
-      if(!["won", "lost"].includes(status)) {
-        return res.status(400).json({ message: `Invalid status. Use 'won' or 'lost'` }); 
-      }
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
 
-      const trade = await Trade.findByIdAndDelete(id, { status }, { new: true });
+        if (!["won", "lost"].includes(status)) {
+            return res.status(400).json({ message: `Invalid status. Use 'won' or 'lost'` });
+        }
 
-      if(!trade) {
-        return res.status(404).json({ message: "Trade not found" });
-      }
-      
-      res.status(200).json({ message: "Trade status updated", trade });
-    } catch(error){
-       res.status(500).json({ message: "Server error", error }); 
+        const trade = await Trade.findByIdAndUpdate(id, { status }, { new: true });
+
+        if (!trade) {
+            return res.status(404).json({ message: "Trade not found" });
+        }
+
+        res.status(200).json({ message: "Trade status updated", trade });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
     }
 };
