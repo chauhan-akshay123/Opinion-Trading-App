@@ -38,11 +38,23 @@ exports.createEvent = async (req, res) => {
     }
 };
 
+exports.getEventById = async (req, res) => {
+    try{
+      const event = await Event.findOne({ eventId: req.params.id });
+      if(!event) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      res.status(200).json(event); 
+    } catch(error){
+        res.status(500).json({ message: "Server error", error });
+    }
+}
+
 // Delete an event
 exports.deleteEvent = async (req, res) => {
     try{
-      const { id } = req.params;
-      const event = await Event.findByIdAndDelete(id);
+      const event = await Evenet.findOne({ eventId: req.params.id });
       if(!event) {
          return res.status(404).json({ message: "Event not found" });
       }  
